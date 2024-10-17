@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изучение языков</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Language_app/styles.css' %}">
+</head>
+<body>
+    <h1>Прогресс изучения языков</h1>
+
+    <p>Выбранный язык: {{ language }}</p>
+    <p>Ваш прогресс: {{ progress }}%</p>
+
+    <form method="post" action="{% url 'save_progress' %}">
+        {% csrf_token %}
+        <label for="language">Выберите язык</label>
+        <select name="language" id="language">
+            <option value="English" {% if language == 'English' %}selected{% endif %}>Английский</option>
+            <option value="Spanish" {% if language == 'Spanish' %}selected{% endif %}>Испанский</option>
+            <option value="French" {% if language == 'French' %}selected{% endif %}>Французский</option>
+        </select><br><br>
+        <label for="progress">Ваш прогресс (%):</label>
+        <input type="number" name="progress" id="progress" min="0" max="100" value="{{ progress }}">
+        <input type="submit" value="Сохранить прогресс">
+    </form>
+</body>
+</html>

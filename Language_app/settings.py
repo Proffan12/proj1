@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'HYHY',
+    'Language_Learning',
     'django.contrib.postgres',
 ]
 
@@ -51,12 +51,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'HAHA.urls'
+ROOT_URLCONF = 'Language_app.urls'
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'HAHA.wsgi.application'
+WSGI_APPLICATION = 'Language_app.wsgi.application'
 
 
 # Database
@@ -121,9 +124,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+from pathlib import Path
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# URL для доступа к статическим файлам
+STATIC_URL = '/static/'
+
+# Путь к директории со статическими файлами (например, если у вас есть папка static в проекте)
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Путь к вашей директории со статикой
+]
+
+# Путь для сбора всех статических файлов (например, для продакшена)
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
