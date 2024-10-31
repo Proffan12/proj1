@@ -1,31 +1,60 @@
+import json
+import os
+from django.conf import settings
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 
-def form_view(request):
-    # Получаем язык и прогресс из cookies, устанавливаем значения по умолчанию
-    language = request.COOKIES.get('language', 'English')
-    progress = request.COOKIES.get('progress', 0)
+# Путь для хранения JSON файлов
+ALBUMS_FOLDER = os.path.join(settings.BASE_DIR, 'albums')
 
-    # Преобразуем прогресс в целое число
-    progress = int(progress) if isinstance(progress, str) and progress.isdigit() else 0
+# Убедимся, что папка для JSON файлов существует
+if not os.path.exists(ALBUMS_FOLDER):
+    os.makedirs(ALBUMS_FOLDER)
 
-    return render(request, 'Language_app/form.html', {'language': language, 'progress': progress})
+def index(request):
+    return render(request, 'Language_app/form.html')
 
-def save_progress(request):
-    if request.method == 'POST':
-        language = request.POST.get('language')
-        progress = request.POST.get('progress')
+def save_album(request):
+    if request.method == "POST":
+        album_data = {
+            "title": request.POST.get("title"),
+            "artist": request.POST.get("artist"),
+            "year": request.POST.get("year"),
+            "genre": request.POST.get("genre")
+        }
 
-        # Создаем редирект
-        response = redirect('form_view')
+        # Сохранение данных в JSON файл
+        album_filename = f"{album_data['title']}_{album_data['artist']}.json"
+        album_filepath = os.path.join(ALBUMS_FOLDER, album_filename)
         
-        # Устанавливаем cookies
-        response.set_cookie('language', language)
-        response.set_cookie('progress', progress)
-        
-        return response
+        with open(album_filepath, 'w', encoding='utf-8') as json_file:
+            json.dump(album_data, json_file, ensure_ascii=False, indent=4)
 
-        #DIONBIODNBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBDIO
-        
+        return redirect('index')
+    return render(request, 'Language_app/form.html')
 
+def load_albums(request):
+    # Загрузка всех файлов JSON из папки
+    albums = []
+    for filename in os.listdir(ALBUMS_FOLDER):
+        if filename.endswith('.json'):
+            filepath = os.path.join(ALBUMS_FOLDER, filename)
+            with open(filepath, 'r', encoding='utf-8') as json_file:
+                album_data = json.load(json_file)
+                albums.append(album_data)
+    
+    return render(request, 'Language_app/album_list.html', {"albums": albums})
 
-
+def upload_file(request):
+    if request.method == 'POST' and request.FILES['file']:
+        uploaded_file = request.FILES['file']
+        if uploaded_file.name.endswith('.json'):
+            # Сохраняем загруженный файл
+            file_path = os.path.join(ALBUMS_FOLDER, uploaded_file.name)
+            with open(file_path, 'wb') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            return redirect('load_albums')
+        else:
+            return JsonResponse({"error": "Недопустимый формат файла. Пожалуйста, загрузите файл JSON."})
+    return render(request, 'Language_app/upload_form.html')

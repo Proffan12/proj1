@@ -18,6 +18,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.form_view, name='form_view'),
-    path('save/', views.save_progress, name='save_progress'),
+    path('', views.index, name='index'),
+    path('save_album/', views.save_album, name='save_album'),
+    path('load_albums/', views.load_albums, name='load_albums'),
+    path('upload_file/', views.upload_file, name='upload_file'),
+    
 ]

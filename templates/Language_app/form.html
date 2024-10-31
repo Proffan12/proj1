@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    {% load static %} 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Изучение языков</title>
-    {% load static %}
+    <title>Музыкальные Альбомы</title>
     <link rel="stylesheet" href="{% static 'Language_app/styles.css' %}">
 </head>
 <body>
-    <h1>Прогресс изучения языков</h1>
+    <div class="container">
+        <h1>Введите информацию об альбоме</h1>
+        
+        <form action="{% url 'save_album' %}" method="post">
+            {% csrf_token %}
+            <label>Название альбома:</label>
+            <input type="text" name="title" required><br>
+            <label>Исполнитель:</label>
+            <input type="text" name="artist" required><br>
+            <label>Год:</label>
+            <input type="number" name="year" required><br>
+            <label>Жанр:</label>
+            <input type="text" name="genre" required><br>
+            <button type="submit">Сохранить альбом</button>
+        </form>
 
-    <p>Выбранный язык: {{ language }}</p>
-    <p>Ваш прогресс: {{ progress }}%</p>
+        <h1>Загрузить файл альбома (JSON)</h1>
+        
+        <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file" accept=".json" required><br>
+            <button type="submit">Загрузить</button>
+        </form>
 
-    <form method="post" action="{% url 'save_progress' %}">
-        {% csrf_token %}
-        <label for="language">Выберите язык</label>
-        <select name="language" id="language">
-            <option value="English" {% if language == 'English' %}selected{% endif %}>Английский</option>
-            <option value="Spanish" {% if language == 'Spanish' %}selected{% endif %}>Испанский</option>
-            <option value="French" {% if language == 'French' %}selected{% endif %}>Французский</option>
-        </select><br><br>
-        <label for="progress">Ваш прогресс (%):</label>
-        <input type="number" name="progress" id="progress" min="0" max="100" value="{{ progress }}">
-        <input type="submit" value="Сохранить прогресс">
-    </form>
+        <a href="{% url 'load_albums' %}">Посмотреть все альбомы</a>
+    </div>
 </body>
 </html>

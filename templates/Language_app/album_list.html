@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %} 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список Альбомов</title>
+    <link rel="stylesheet" href="{% static 'Language_app/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Сохраненные Альбомы</h1>
+        
+        {% if albums %}
+            <ul>
+                {% for album in albums %}
+                    <li>
+                        <strong>{{ album.title }}</strong> - {{ album.artist }} ({{ album.year }}) - Жанр: {{ album.genre }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нет доступных альбомов.</p>
+        {% endif %}
+        
+        <a href="{% url 'index' %}">Вернуться назад</a>
+    </div>
+</body>
+</html>

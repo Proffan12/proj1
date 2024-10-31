@@ -12,21 +12,21 @@ services:
     networks:
       - mynetwork
 
-  pgdb:
-    image: postgres
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    container_name: pgdb
-    volumes:
-      - pgdbdata:/var/lib/postgresql/data/
-    networks:
-      - mynetwork
+  # pgdb:
+  #   image: postgres
+  #   environment:
+  #     - POSTGRES_DB=postgres
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #   container_name: pgdb
+  #   volumes:
+  #     - pgdbdata:/var/lib/postgresql/data/
+  #   networks:
+  #     - mynetwork
 
-networks:
-  mynetwork:
-    driver: bridge
+# networks:
+#   mynetwork:
+#     driver: bridge
 
-volumes:
-  pgdbdata:
+# volumes:
+#   pgdbdata:

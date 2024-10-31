@@ -79,14 +79,14 @@ WSGI_APPLICATION = 'Language_app.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',   # Используется PostgreSQL
-        'NAME': 'postgres', # Имя базы данных
-        'USER': 'postgres', # Имя пользователя
-        'PASSWORD': 'postgres', # Пароль пользователя
-        'HOST': 'pgdb', # Наименование контейнера для базы данных в Docker Compose
-        'PORT': '5432',  # Порт базы данных
-    }
+    'default': {}
+    #     'ENGINE': 'django.db.backends.postgresql',   # Используется PostgreSQL
+    #     'NAME': 'postgres', # Имя базы данных
+    #     'USER': 'postgres', # Имя пользователя
+    #     'PASSWORD': 'postgres', # Пароль пользователя
+    #     'HOST': 'pgdb', # Наименование контейнера для базы данных в Docker Compose
+    #     'PORT': '5432',  # Порт базы данных
+    
 }
 
 
@@ -141,3 +141,5 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
